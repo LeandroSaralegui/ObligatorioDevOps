@@ -167,3 +167,12 @@ app/
     ├── ui/             # TypeScript/Express - Frontend
     └── admin/          # TypeScript/Express - Panel de administración
 ```
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+Estrategia Trunk-Based Development
+main
+ ├── feature/docker
+ ├── feature/terraform
+ ├── feature/cicd
+ └── feature/devsecops
+
