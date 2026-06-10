@@ -11,7 +11,7 @@ locals {
 
 resource "aws_ecr_repository" "microservicios" {
     for_each = toset(local.microservicios)
-    name = "mi-proyecto/${each.value}
+    name = "mi-proyecto/${each.value}"
     image_tag_mutability = "MUTABLE"
 
     image_scanning_configuration {
