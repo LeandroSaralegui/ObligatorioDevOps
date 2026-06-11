@@ -1,0 +1,13 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+
+# Variables sensibles
+*.tfvars
+!terraform.tfvars.example
+
+.env
+.env.local
+*.env
