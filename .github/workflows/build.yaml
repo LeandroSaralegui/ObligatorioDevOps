@@ -22,4 +22,18 @@ jobs:
       
       - name: Build Docker images
         run: docker compose build
-      
+  quality:
+    name: Analisis de Calidad - SonarCloud
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout codigo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    
