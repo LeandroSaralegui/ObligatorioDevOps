@@ -6,10 +6,7 @@ crash.log
 
 # Variables sensibles
 *.tfvars
-!terraform.tfvars.example
-
-.env
-.env.*
+!terraform.tfvars.ex.env.*
 *.env
 
 # Terraform plans
