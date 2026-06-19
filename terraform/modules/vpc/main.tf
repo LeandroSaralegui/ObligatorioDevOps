@@ -3,8 +3,8 @@ provider "aws" {
 }
 
 resource "aws_vpc" "main" {
-  cidr_block = var.vpc_cidr_block
-   enable_dns_support   = true
+  cidr_block           = var.vpc_cidr_block
+  enable_dns_support   = true
   enable_dns_hostnames = true
   tags = {
     name        = var.vpc_name
@@ -51,7 +51,7 @@ resource "aws_nat_gateway" "nat_gw" {
   count = length(var.public_subnets)
 
   allocation_id = aws_eip.nat_eip[count.index].id
-  subnet_id = aws_subnet.public_subnet[count.index].id
+  subnet_id     = aws_subnet.public_subnet[count.index].id
 
   tags = {
     name        = "${var.vpc_name}-nat-gw"
