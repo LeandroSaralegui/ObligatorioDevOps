@@ -32,7 +32,7 @@ services:
 
   carts:
     build:
-      context: ./src/cart
+      context: ./src/carts
     environment:
       CART_PERSISTENCE_PROVIDER: postgres
       CART_POSTGRES_HOST: db
