@@ -1,13 +1,22 @@
 name: Build
 
 on:
-  workflow_dispatch:
-    
   pull_request:
     branches: [main]
   push:
     branches: [main]
-    
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Entorno a desplegar (dev/test/prod)"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - test
+          - prod
+          
 permissions:
   contents: read
   security-events: write
@@ -20,7 +29,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+        
+      - name: Determinar entorno
+        id: set-env
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref_name }}" = "main" ]; then
+            echo "environment=prod" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref_name }}" = "staging" ]; then
+            echo "environment=staging" >> $GITHUB_OUTPUT
+          else
+            echo "environment=dev" >> $GITHUB_OUTPUT
+          fi
       - name: Validate Docker Compose configuration
         run: docker compose config
       
