@@ -1,0 +1,10 @@
+[allowlist]
+description = "Allow AWS Secrets Manager secret names used by Terraform"
+paths = [
+  '''terraform/environments/dev/main.tf'''
+]
+regexes = [
+  '''admin-password''',
+  '''postgres-password''',
+  '''admin-jwt-secret'''
+]
