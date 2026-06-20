@@ -213,4 +213,43 @@ jobs:
 
             docker push \
               $ECR_REGISTRY/$PROJECT_NAME/$service:latest
-          done         
+          done   
+          
+  deploy-dev:
+    name: Deploy Dev to ECS
+    runs-on: ubuntu-latest
+    needs: publish-ecr
+
+    env:
+      AWS_REGION: us-east-1
+      ECS_CLUSTER: retailstore-dev-ecs-cluster
+
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Force new deployment on ECS services
+        run: |
+          services=(
+            "retailstore-dev-admin-service"
+            "retailstore-dev-carts-service"
+            "retailstore-dev-catalog-service"
+            "retailstore-dev-checkout-service"
+            "retailstore-dev-orders-service"
+            "retailstore-dev-ui-service"
+          )
+
+          for service in "${services[@]}"
+          do
+            echo "Deploying $service"
+
+            aws ecs update-service \
+              --cluster $ECS_CLUSTER \
+              --service $service \
+              --force-new-deployment
+          done
