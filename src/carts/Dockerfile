@@ -1,7 +1,8 @@
-FROM python:3.12
+FROM python:3.12-alpine
 WORKDIR /app
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
-RUN pip install -r requirements.txt
 ENV CART_PERSISTENCE_PROVIDER=in-memory
 ENV PORT=8080
 EXPOSE 8080
