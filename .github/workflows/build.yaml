@@ -46,6 +46,8 @@ jobs:
         run: docker compose config
       
       - name: Build Docker images
+        env:
+          DOCKER_BUILDKIT: 1
         run: docker compose build
   quality:
     name: Analisis de Calidad - SonarCloud
