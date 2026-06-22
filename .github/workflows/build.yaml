@@ -197,7 +197,7 @@ jobs:
 
       - name: Build and Push Images
         run: |
-          services=("admin" "carts" "catalog" "checkout" "orders" "ui")
+          services=("admin" "carts" "catalog" "checkout" "orders" "ui" "db")
 
           for service in "${services[@]}"
           do
