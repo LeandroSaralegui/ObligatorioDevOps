@@ -289,7 +289,7 @@ jobs:
           mkdir -p newman-report
 
           newman run postman/Retailstore.postman_collection.json \
-            --env-var "baseUrl=$BASE_URL" \
+            --env-var "BASE_URL=$BASE_URL" \
             --reporters cli,htmlextra,junit \
             --reporter-htmlextra-export newman-report/report.html \
             --reporter-junit-export newman-report/report.xml
