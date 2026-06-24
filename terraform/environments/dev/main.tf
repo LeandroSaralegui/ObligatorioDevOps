@@ -59,6 +59,53 @@ module "ecs_services" {
   container_port     = 8080
   cpu                = 256
   memory             = 512
-  desired_count      = 0 //1
+  desired_count      = 1 //1
   aws_region         = var.aws_region
+  vpc_cidr_block     = var.vpc_cidr_block
+  service_environment = {
+
+    ui = {
+      RETAIL_UI_ENDPOINTS_CATALOG  = "http://${module.ecs_services.catalog_nlb_dns_name}:8080"
+      RETAIL_UI_ENDPOINTS_CARTS    = "http://${module.ecs_services.carts_nlb_dns_name}:8080"
+      RETAIL_UI_ENDPOINTS_CHECKOUT = "http://${module.ecs_services.checkout_nlb_dns_name}:8080"
+      RETAIL_UI_ENDPOINTS_ORDERS   = "http://${module.ecs_services.orders_nlb_dns_name}:8080"
+    }
+
+    checkout = {
+      RETAIL_CHECKOUT_ENDPOINTS_ORDERS = "http://${module.ecs_services.orders_nlb_dns_name}:8080"
+    }
+
+    db = {
+      POSTGRES_USER = "retail_user"
+      POSTGRES_DB   = "orders"
+    }
+
+    catalog = {
+      GIN_MODE                            = "release"
+      RETAIL_CATALOG_PERSISTENCE_PROVIDER = "postgres"
+      RETAIL_CATALOG_PERSISTENCE_ENDPOINT = "${module.ecs_services.db_nlb_dns_name}:5432"
+      RETAIL_CATALOG_PERSISTENCE_DB_NAME  = "catalogdb"
+      RETAIL_CATALOG_PERSISTENCE_USER     = "retail_user"
+    }
+
+    orders = {
+      GIN_MODE                           = "release"
+      RETAIL_ORDERS_PERSISTENCE_ENDPOINT = "${module.ecs_services.db_nlb_dns_name}:5432"
+      RETAIL_ORDERS_PERSISTENCE_NAME     = "orders"
+      RETAIL_ORDERS_PERSISTENCE_USERNAME = "retail_user"
+    }
+  }
+  service_secrets = {
+    db = {
+      POSTGRES_PASSWORD = module.secrets.secret_arns["postgres-password"]
+    }
+
+    catalog = {
+      RETAIL_CATALOG_PERSISTENCE_PASSWORD = module.secrets.secret_arns["postgres-password"]
+    }
+
+    orders = {
+      RETAIL_ORDERS_PERSISTENCE_PASSWORD = module.secrets.secret_arns["postgres-password"]
+    }
+  }
 } 

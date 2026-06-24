@@ -36,6 +36,27 @@ resource "aws_security_group" "ecs_tasks" {
     protocol        = "tcp"
     security_groups = [aws_security_group.alb.id]
   }
+  ingress {
+    description = "PostgreSQL interno entre tareas ECS"
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    self        = true
+  }
+  ingress {
+    description = "PostgreSQL desde la VPC"
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr_block]
+  }
+  ingress {
+    description = "HTTP interno desde la VPC"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr_block]
+  }
 
   egress {
     from_port   = 0
@@ -155,9 +176,23 @@ resource "aws_ecs_task_definition" "services" {
       image     = "${each.value}:latest"
       essential = true
 
+      environment = [
+        for env_name, env_value in lookup(var.service_environment, each.key, {}) : {
+          name  = env_name
+          value = env_value
+        }
+      ]
+
+      secrets = [
+        for secret_name, secret_arn in lookup(var.service_secrets, each.key, {}) : {
+          name      = secret_name
+          valueFrom = secret_arn
+        }
+      ]
+
       portMappings = [
         {
-          containerPort = var.container_port
+          containerPort = each.key == "db" ? 5432 : var.container_port
           protocol      = "tcp"
         }
       ]
@@ -195,6 +230,7 @@ resource "aws_ecs_service" "services" {
     assign_public_ip = false
   }
 
+
   dynamic "load_balancer" {
     for_each = contains(var.public_services, each.key) ? [1] : []
 
@@ -205,14 +241,283 @@ resource "aws_ecs_service" "services" {
     }
   }
 
+  dynamic "load_balancer" {
+    for_each = each.key == "db" ? [1] : []
+
+    content {
+      target_group_arn = aws_lb_target_group.db.arn
+      container_name   = each.key
+      container_port   = 5432
+    }
+  }
+
+  dynamic "load_balancer" {
+  for_each = each.key == "catalog" ? [1] : []
+
+    content {
+      target_group_arn = aws_lb_target_group.catalog.arn
+      container_name   = each.key
+      container_port   = 8080
+    }
+  }
+  dynamic "load_balancer" {
+  for_each = each.key == "carts" ? [1] : []
+
+  content {
+    target_group_arn = aws_lb_target_group.carts.arn
+    container_name   = each.key
+    container_port   = 8080
+  }
+}
+
+dynamic "load_balancer" {
+  for_each = each.key == "checkout" ? [1] : []
+
+  content {
+    target_group_arn = aws_lb_target_group.checkout.arn
+    container_name   = each.key
+    container_port   = 8080
+  }
+}
+
+dynamic "load_balancer" {
+  for_each = each.key == "orders" ? [1] : []
+
+  content {
+    target_group_arn = aws_lb_target_group.orders.arn
+    container_name   = each.key
+    container_port   = 8080
+  }
+}
+
   depends_on = [
     aws_lb_listener.http,
-    aws_lb_listener_rule.admin
+    aws_lb_listener_rule.admin,
+    aws_lb_listener.db,
+    aws_lb_listener.catalog,
+    aws_lb_listener.carts,
+    aws_lb_listener.checkout,
+    aws_lb_listener.orders
   ]
 
   tags = {
     Project     = var.project_name
     Environment = var.environment
     Service     = each.key
+  }
+}
+
+resource "aws_lb" "db" {
+  name               = "${var.project_name}-${var.environment}-db-nlb"
+  internal           = true
+  load_balancer_type = "network"
+  subnets            = var.private_subnet_ids
+
+  tags = {
+    Project     = var.project_name
+    Environment = var.environment
+    Service     = "db"
+  }
+}
+
+resource "aws_lb_target_group" "db" {
+  name        = "${var.project_name}-${var.environment}-db-tg"
+  port        = 5432
+  protocol    = "TCP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
+
+  health_check {
+    protocol = "TCP"
+    port     = "5432"
+  }
+
+  tags = {
+    Project     = var.project_name
+    Environment = var.environment
+    Service     = "db"
+  }
+}
+
+resource "aws_lb_listener" "db" {
+  load_balancer_arn = aws_lb.db.arn
+  port              = 5432
+  protocol          = "TCP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.db.arn
+  }
+}
+
+resource "aws_lb" "catalog" {
+  name               = "${var.project_name}-${var.environment}-catalog-nlb"
+  internal           = true
+  load_balancer_type = "network"
+  subnets            = var.private_subnet_ids
+
+  tags = {
+    Project     = var.project_name
+    Environment = var.environment
+    Service     = "catalog"
+  }
+}
+
+resource "aws_lb_target_group" "catalog" {
+  name        = "${var.project_name}-${var.environment}-catalog-tg"
+  port        = 8080
+  protocol    = "TCP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
+
+  health_check {
+    protocol = "TCP"
+    port     = "8080"
+  }
+
+  tags = {
+    Project     = var.project_name
+    Environment = var.environment
+    Service     = "catalog"
+  }
+}
+
+resource "aws_lb_listener" "catalog" {
+  load_balancer_arn = aws_lb.catalog.arn
+  port              = 8080
+  protocol          = "TCP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.catalog.arn
+  }
+}
+
+resource "aws_lb" "carts" {
+  name               = "${var.project_name}-${var.environment}-carts-nlb"
+  internal           = true
+  load_balancer_type = "network"
+  subnets            = var.private_subnet_ids
+
+  tags = {
+    Project     = var.project_name
+    Environment = var.environment
+    Service     = "carts"
+  }
+}
+
+resource "aws_lb_target_group" "carts" {
+  name        = "${var.project_name}-${var.environment}-carts-tg"
+  port        = 8080
+  protocol    = "TCP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
+
+  health_check {
+    protocol = "TCP"
+    port     = "8080"
+  }
+
+  tags = {
+    Project     = var.project_name
+    Environment = var.environment
+    Service     = "carts"
+  }
+}
+
+resource "aws_lb_listener" "carts" {
+  load_balancer_arn = aws_lb.carts.arn
+  port              = 8080
+  protocol          = "TCP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.carts.arn
+  }
+}
+
+resource "aws_lb" "checkout" {
+  name               = "${var.project_name}-${var.environment}-checkout-nlb"
+  internal           = true
+  load_balancer_type = "network"
+  subnets            = var.private_subnet_ids
+
+  tags = {
+    Project     = var.project_name
+    Environment = var.environment
+    Service     = "checkout"
+  }
+}
+
+resource "aws_lb_target_group" "checkout" {
+  name        = "${var.project_name}-${var.environment}-checkout-tg"
+  port        = 8080
+  protocol    = "TCP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
+
+  health_check {
+    protocol = "TCP"
+    port     = "8080"
+  }
+
+  tags = {
+    Project     = var.project_name
+    Environment = var.environment
+    Service     = "checkout"
+  }
+}
+
+resource "aws_lb_listener" "checkout" {
+  load_balancer_arn = aws_lb.checkout.arn
+  port              = 8080
+  protocol          = "TCP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.checkout.arn
+  }
+}
+
+resource "aws_lb" "orders" {
+  name               = "${var.project_name}-${var.environment}-orders-nlb"
+  internal           = true
+  load_balancer_type = "network"
+  subnets            = var.private_subnet_ids
+
+  tags = {
+    Project     = var.project_name
+    Environment = var.environment
+    Service     = "orders"
+  }
+}
+
+resource "aws_lb_target_group" "orders" {
+  name        = "${var.project_name}-${var.environment}-orders-tg"
+  port        = 8080
+  protocol    = "TCP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
+
+  health_check {
+    protocol = "TCP"
+    port     = "8080"
+  }
+
+  tags = {
+    Project     = var.project_name
+    Environment = var.environment
+    Service     = "orders"
+  }
+}
+
+resource "aws_lb_listener" "orders" {
+  load_balancer_arn = aws_lb.orders.arn
+  port              = 8080
+  protocol          = "TCP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.orders.arn
   }
 }
