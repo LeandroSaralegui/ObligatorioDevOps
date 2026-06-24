@@ -72,3 +72,20 @@ variable "public_services" {
   type        = set(string)
   default     = ["ui", "admin"]
 }
+
+variable "service_environment" {
+  description = "Variables de entorno por servicio ECS"
+  type        = map(map(string))
+  default     = {}
+}
+
+variable "service_secrets" {
+  description = "Secrets de AWS Secrets Manager por servicio ECS"
+  type        = map(map(string))
+  default     = {}
+}
+
+variable "vpc_cidr_block" {
+  description = "CIDR block de la VPC"
+  type        = string
+}

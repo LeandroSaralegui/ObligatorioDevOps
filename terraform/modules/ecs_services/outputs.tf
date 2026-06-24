@@ -54,3 +54,24 @@ output "ecs_service_names" {
     name => service.name
   }
 }
+
+output "db_nlb_dns_name" {
+  value = aws_lb.db.dns_name
+}
+
+output "catalog_nlb_dns_name" {
+  value = aws_lb.catalog.dns_name
+}
+
+output "orders_nlb_dns_name" {
+  value = aws_lb.orders.dns_name
+}
+
+output "checkout_nlb_dns_name" {
+  value = aws_lb.checkout.dns_name
+}
+
+output "carts_nlb_dns_name" {
+  value = aws_lb.carts.dns_name
+}
+
