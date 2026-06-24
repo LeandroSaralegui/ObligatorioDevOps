@@ -288,7 +288,7 @@ jobs:
         run: |
           mkdir -p newman-report
 
-          newman run postman/retailstore-functional-tests.postman_collection.json \
+          newman run postman/Retailstore.postman_collection.json \
             --env-var "baseUrl=$BASE_URL" \
             --reporters cli,htmlextra,junit \
             --reporter-htmlextra-export newman-report/report.html \
