@@ -31,8 +31,12 @@
         {
           "listen": "prerequest",
           "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
             "packages": {},
-            "type": "text/javascript"
+            "requests": {}
           }
         }
       ],
@@ -49,13 +53,9 @@
           }
         },
         "url": {
-          "raw": "retailstore-dev-alb-3550136.us-east-1.elb.amazonaws.com/health",
+          "raw": "{{BASE_URL}}/health",
           "host": [
-            "retailstore-dev-alb-3550136",
-            "us-east-1",
-            "elb",
-            "amazonaws",
-            "com"
+            "{{BASE_URL}}"
           ],
           "path": [
             "health"
@@ -91,13 +91,9 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "retailstore-dev-alb-3550136.us-east-1.elb.amazonaws.com/api/catalog/products",
+          "raw": "{{BASE_URL}}/api/catalog/products",
           "host": [
-            "retailstore-dev-alb-3550136",
-            "us-east-1",
-            "elb",
-            "amazonaws",
-            "com"
+            "{{BASE_URL}}"
           ],
           "path": [
             "api",
@@ -141,13 +137,9 @@
           "raw": ""
         },
         "url": {
-          "raw": "retailstore-dev-alb-3550136.us-east-1.elb.amazonaws.com/api/catalog/tags",
+          "raw": "{{BASE_URL}}/api/catalog/tags",
           "host": [
-            "retailstore-dev-alb-3550136",
-            "us-east-1",
-            "elb",
-            "amazonaws",
-            "com"
+            "{{BASE_URL}}"
           ],
           "path": [
             "api",
@@ -191,13 +183,9 @@
           }
         },
         "url": {
-          "raw": "retailstore-dev-alb-3550136.us-east-1.elb.amazonaws.com/api/orders",
+          "raw": "{{BASE_URL}}/api/orders",
           "host": [
-            "retailstore-dev-alb-3550136",
-            "us-east-1",
-            "elb",
-            "amazonaws",
-            "com"
+            "{{BASE_URL}}"
           ],
           "path": [
             "api",
@@ -237,21 +225,31 @@
           }
         },
         "url": {
-          "raw": "retailstore-dev-alb-3550136.us-east-1.elb.amazonaws.com/api/orders",
+          "raw": "{{BASE_URL}}/api/orders",
           "host": [
-            "retailstore-dev-alb-3550136",
-            "us-east-1",
-            "elb",
-            "amazonaws",
-            "com"
+            "{{BASE_URL}}"
           ],
           "path": [
             "api",
             "orders"
+          ],
+          "query": [
+            {
+              "key": "",
+              "value": null,
+              "type": "text",
+              "disabled": true
+            }
           ]
         }
       },
       "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": ""
     }
   ]
 }
