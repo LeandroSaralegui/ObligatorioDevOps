@@ -48,20 +48,24 @@ module "secrets" {
 module "ecs_services" {
   source = "../../modules/ecs_services"
 
-  project_name       = var.project_name
-  environment        = var.environment
-  cluster_id         = module.ecs.cluster_id
-  vpc_id             = module.vpc.vpc_id
-  public_subnet_ids  = module.vpc.public_subnet_ids
-  private_subnet_ids = module.vpc.private_subnet_ids
-  repository_urls    = module.ecr.repository_urls
-  execution_role_arn = data.aws_iam_role.labrole.arn
-  container_port     = 8080
-  cpu                = 256
-  memory             = 512
-  desired_count      = 1 //1
-  aws_region         = var.aws_region
-  vpc_cidr_block     = var.vpc_cidr_block
+  project_name             = var.project_name
+  environment              = var.environment
+  cluster_id               = module.ecs.cluster_id
+  vpc_id                   = module.vpc.vpc_id
+  public_subnet_ids        = module.vpc.public_subnet_ids
+  private_subnet_ids       = module.vpc.private_subnet_ids
+  repository_urls          = module.ecr.repository_urls
+  execution_role_arn       = data.aws_iam_role.labrole.arn
+  container_port           = 8080
+  cpu                      = 256
+  memory                   = 512
+  desired_count            = 1 //1
+  aws_region               = var.aws_region
+  vpc_cidr_block           = var.vpc_cidr_block
+  autoscaling_services     = ["ui"]
+  autoscaling_min_capacity = 1
+  autoscaling_max_capacity = 3
+  autoscaling_cpu_target   = 70
   service_environment = {
 
     ui = {

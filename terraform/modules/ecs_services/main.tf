@@ -521,3 +521,38 @@ resource "aws_lb_listener" "orders" {
     target_group_arn = aws_lb_target_group.orders.arn
   }
 }
+
+resource "aws_appautoscaling_target" "ecs" {
+  for_each = {
+    for name in var.autoscaling_services :
+    name => name
+    if contains(keys(var.repository_urls), name)
+  }
+
+  max_capacity       = var.autoscaling_max_capacity
+  min_capacity       = var.autoscaling_min_capacity
+  resource_id = "service/${var.project_name}-${var.environment}-ecs-cluster/${aws_ecs_service.services[each.key].name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+}
+
+resource "aws_appautoscaling_policy" "cpu" {
+  for_each = aws_appautoscaling_target.ecs
+
+  name               = "${var.project_name}-${var.environment}-${each.key}-cpu-autoscaling"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = each.value.resource_id
+  scalable_dimension = each.value.scalable_dimension
+  service_namespace  = each.value.service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    target_value = var.autoscaling_cpu_target
+
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+    }
+
+    scale_in_cooldown  = 60
+    scale_out_cooldown = 60
+  }
+}
