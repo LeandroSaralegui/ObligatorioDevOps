@@ -89,3 +89,26 @@ variable "vpc_cidr_block" {
   description = "CIDR block de la VPC"
   type        = string
 }
+
+variable "autoscaling_services" {
+  description = "Microservicios con Auto Scaling habilitado"
+  type        = set(string)
+}
+
+variable "autoscaling_min_capacity" {
+  description = "Cantidad mínima de tareas por servicio"
+  type        = number
+  default     = 1
+}
+
+variable "autoscaling_max_capacity" {
+  description = "Cantidad máxima de tareas por servicio"
+  type        = number
+  default     = 3
+}
+
+variable "autoscaling_cpu_target" {
+  description = "Porcentaje objetivo de utilización de CPU para el Auto Scaling"
+  type        = number
+  default     = 70
+}
