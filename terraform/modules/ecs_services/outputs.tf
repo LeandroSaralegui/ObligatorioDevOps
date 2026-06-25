@@ -75,3 +75,17 @@ output "carts_nlb_dns_name" {
   value = aws_lb.carts.dns_name
 }
 
+output "alb_arn_suffix" {
+  description = "ARN suffix del ALB público"
+  value       = aws_lb.this.arn_suffix
+}
+
+output "ui_target_group_arn_suffix" {
+  description = "ARN suffix del Target Group de UI"
+  value       = aws_lb_target_group.services["ui"].arn_suffix
+}
+
+output "ui_service_name" {
+  description = "Nombre del ECS Service de UI"
+  value       = aws_ecs_service.services["ui"].name
+}

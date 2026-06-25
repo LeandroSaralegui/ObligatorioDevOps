@@ -32,3 +32,8 @@ output "ecs_log_group_name" {
   description = "Nombre del CloudWatch Log Group asociado a ECS"
   value       = module.ecs.log_group_name
 }
+
+output "observability_status_url" {
+  description = "Endpoint serverless de observabilidad"
+  value       = module.serverless.observability_status_url
+}
