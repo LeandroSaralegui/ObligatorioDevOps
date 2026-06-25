@@ -62,7 +62,7 @@ module "ecs_services" {
   desired_count            = 1 //1
   aws_region               = var.aws_region
   vpc_cidr_block           = var.vpc_cidr_block
-  autoscaling_services     = ["ui"]
+  autoscaling_services     = ["ui", "catalog", "carts", "checkout", "orders"]
   autoscaling_min_capacity = 1
   autoscaling_max_capacity = 3
   autoscaling_cpu_target   = 70
@@ -112,4 +112,26 @@ module "ecs_services" {
       RETAIL_ORDERS_PERSISTENCE_PASSWORD = module.secrets.secret_arns["postgres-password"]
     }
   }
-} 
+}
+
+module "cloudwatch" {
+  source = "../../modules/cloudwatch"
+
+  project_name            = var.project_name
+  environment             = var.environment
+  aws_region              = var.aws_region
+  cluster_name            = "${var.project_name}-${var.environment}-ecs-cluster"
+  service_name            = module.ecs_services.ui_service_name
+  alb_arn_suffix          = module.ecs_services.alb_arn_suffix
+  target_group_arn_suffix = module.ecs_services.ui_target_group_arn_suffix
+  alarm_email             = ""
+}
+
+module "serverless" {
+  source = "../../modules/serverless"
+
+  project_name    = var.project_name
+  environment     = var.environment
+  aws_region      = var.aws_region
+  lambda_role_arn = data.aws_iam_role.labrole.arn
+}
