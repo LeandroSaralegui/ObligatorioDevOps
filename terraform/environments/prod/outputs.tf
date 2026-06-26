@@ -15,7 +15,7 @@ output "private_subnet_ids" {
 
 output "ecr_repository_urls" {
   description = "URLs de los repositorios ECR creados para los microservicios"
-  value       = module.ecr.repository_urls
+  value       = local.repository_urls
 }
 
 output "ecs_cluster_name" {
@@ -31,4 +31,9 @@ output "ecs_cluster_arn" {
 output "ecs_log_group_name" {
   description = "Nombre del CloudWatch Log Group asociado a ECS"
   value       = module.ecs.log_group_name
+}
+
+output "observability_status_url" {
+  description = "Endpoint serverless de observabilidad"
+  value       = module.serverless.observability_status_url
 }
