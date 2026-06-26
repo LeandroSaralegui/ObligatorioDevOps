@@ -260,7 +260,7 @@ jobs:
     needs: deploy-dev
 
     env:
-      BASE_URL: http://retailstore-dev-alb-599875498.us-east-1.elb.amazonaws.com
+      BASE_URL: http://retailstore-dev-alb-874054961.us-east-1.elb.amazonaws.com
 
     steps:
       - name: Checkout code
