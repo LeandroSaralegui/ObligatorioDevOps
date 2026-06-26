@@ -47,3 +47,8 @@ variable "log_retention_days" {
   type        = number
   default     = 7
 }
+
+variable "ecr_registry" {
+  description = "Registry ECR existente compartido entre ambientes"
+  type        = string
+}
