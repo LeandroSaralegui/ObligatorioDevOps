@@ -1,3 +1,4 @@
+<img width="4073" height="1899" alt="mermaid-diagram (6)" src="https://github.com/user-attachments/assets/84acf740-831f-4133-8bb5-97e820c9b72c" />
 # Retail Store - Sample App
 
 Aplicación de e-commerce basada en microservicios. Permite explorar un catálogo de productos, gestionar un carrito de compras, realizar el checkout y consultar órdenes. Incluye un panel de administración para gestionar productos y ver órdenes.
@@ -177,3 +178,5 @@ main
  └── feature/devsecops
 
 Pull-Request Test
+<img width="4073" height="1899" alt="mermaid-diagram (6)" src="https://github.com/user-attachments/assets/d324c0fb-613f-48da-b721-7892e7dc429b" />
+
