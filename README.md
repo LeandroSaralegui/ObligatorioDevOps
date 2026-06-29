@@ -418,7 +418,6 @@ Fácil implementación.
 Menor planificación formal.
 Menor estructura para seguimiento académico.
 
-
 #### Pros Scrum + Jira
 
 Planificación mediante sprints.
@@ -451,8 +450,8 @@ Era necesario definir una estrategia de colaboración que favoreciera la integra
 
 #### Opciones consideradas
 
--Git Flow
--Trunk-Based Development
+- Git Flow
+- Trunk-Based Development
 
 #### Pros Git Flow
 
@@ -495,7 +494,7 @@ La infraestructura debía ser reproducible, versionada y compartida entre integr
 
 - Configuración manual
 - Terraform + Backend S3
-- 
+
 #### Pros Configuración manual
 
 Implementación rápida.
@@ -535,8 +534,8 @@ La aplicación Retail Store está basada en microservicios contenidos en Docker.
 
 #### Opciones consideradas
 
--Kubernetes (EKS)
--ECS Fargate + ECR
+- Kubernetes (EKS)
+- ECS Fargate + ECR
 
 #### Pros Kubernetes (EKS)
 
@@ -577,8 +576,8 @@ Era necesario incorporar análisis de calidad y controles automáticos en el pip
 
 #### Opciones consideradas
 
-Semgrep
-SonarCloud
+- Semgrep
+- SonarCloud
 
 #### Pros Semgrep
 
@@ -620,8 +619,8 @@ La estrategia DevSecOps requería controles de seguridad automatizados.
 
 #### Opciones consideradas
 
--Escaneo manual
--Trivy + Gitleaks
+- Escaneo manual
+- Trivy + Gitleaks
 
 #### Pros Escaneo manual
 
@@ -662,8 +661,8 @@ Era necesario validar automáticamente el funcionamiento de los servicios luego 
 
 #### Opciones consideradas
 
--Pruebas manuales
--Postman + Newman
+- Pruebas manuales
+- Postman + Newman
 
 #### Pros Pruebas manuales
 
@@ -704,8 +703,8 @@ Se requería integrar al menos un servicio serverless relacionado con observabil
 
 #### Opciones consideradas
 
--Lambda únicamente
--API Gateway + Lambda
+- Lambda únicamente
+- API Gateway + Lambda
 
 #### Pros Lambda únicamente
 
@@ -747,8 +746,8 @@ Era necesario monitorear servicios, recolectar métricas y generar alertas opera
 
 #### Opciones consideradas
 
--Monitoreo manual
--CloudWatch + SNS
+- Monitoreo manual
+- CloudWatch + SNS
 
 #### Pros Monitoreo manual
 
