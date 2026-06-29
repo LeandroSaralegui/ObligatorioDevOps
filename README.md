@@ -176,7 +176,7 @@ app/
 │
 └── .github/workflows/
 
-# Tecnologías
+## Tecnologías
 
 - AWS ECS Fargate
 - AWS ECR
@@ -216,6 +216,23 @@ Las siguientes variables son utilizadas por Terraform para desplegar la infraest
 | `mircoservicios`     | Lista de microservicios desplegados en la solución.                         | `admin`, `ui`, `carts`, `catalog`, `checkout`, `orders`, `db` |
 | `log_retention_days` | Cantidad de días de retención de logs en CloudWatch.                        | `7`                                                          |
 
+## Pipeline CI/CD
+
+Flujo completo del pipeline CI/CD con las etapas de seguridad integradas.
+
+<img width="825" height="1600" alt="244addab-6a4b-4a2c-99a3-03e21b29d41f" src="https://github.com/user-attachments/assets/4b799b56-d82e-44bf-aad4-7f3b8fcafd46" />
+
+Etapas:
+
+1. Build
+2. SonarCloud
+3. Gitleaks
+4. Trivy Filesystem
+5. Trivy Images
+6. Push a ECR
+7. Deploy ECS
+8. Functional Tests (Newman)
+
 ### Ambientes soportados
 
 La infraestructura está preparada para ejecutarse en tres ambientes independientes:
@@ -234,23 +251,18 @@ terraform/environments/prod
 
 La promoción entre ambientes se realiza mediante los pipelines de GitHub Actions definidos para la infraestructura y la aplicación.
 
-# Pipeline CI/CD
+### Quality Gates
 
-Flujo completo del pipeline CI/CD con las etapas de seguridad integradas.
-<img width="825" height="1600" alt="244addab-6a4b-4a2c-99a3-03e21b29d41f" src="https://github.com/user-attachments/assets/4b799b56-d82e-44bf-aad4-7f3b8fcafd46" />
+Se definieron los siguientes umbrales:
 
-Etapas:
+- Coverage mínimo: 20%
+- Code Smells máximos: 20
+- Vulnerabilidades críticas: 0
+- Vulnerabilidades altas: 0 (Con algunas excepciones habladas previamente con el profesor)
 
-1. Build
-2. SonarCloud
-3. Gitleaks
-4. Trivy Filesystem
-5. Trivy Images
-6. Push a ECR
-7. Deploy ECS
-8. Functional Tests (Newman)
+Todo Pull Request debe aprobar satisfactoriamente los controles automáticos configurados en GitHub Actions.
 
-# DevSecOps
+### DevSecOps
 
 Se implementaron las siguientes herramientas:
 
@@ -260,7 +272,7 @@ Se implementaron las siguientes herramientas:
 - Trivy Image Scan
 - AWS Secrets Manager
 
-# Observabilidad
+### Observabilidad
 La solución centraliza logs y métricas mediante CloudWatch Logs.
 
 Componentes monitoreados:
@@ -287,40 +299,48 @@ CloudWatch Alarms
 | Unhealthy Hosts | ≥ 1 host no saludable | Revisar ECS Tasks           |
 
 
-
-# Estrategia de Versionado
+## Estrategia de Versionado
 
 Se adoptó Trunk-Based Development.
+
 <img width="1600" height="81" alt="4fb0c0d3-728f-4d36-b287-73cbb53c7d02" src="https://github.com/user-attachments/assets/cd59ec6b-cb6a-4896-b7da-f68bc37c7550" />
 
 Se seleccionó Trunk-Based Development debido a que el equipo está compuesto solo por dos integrantes y requiere integración continua frecuente.
 Esta estrategia reduce conflictos de merge y simplifica el flujo de trabajo.
 Tambien lso integrantes cuenta con experiencia en esta dinamica de trabajo por lo cual hace que la metodologia de trabajo sea eficiente.
 
-# Quality Gates
 
-Se definieron los siguientes umbrales:
-
-- Coverage mínimo: 20%
-- Code Smells máximos: 20
-- Vulnerabilidades críticas: 0
-- Vulnerabilidades altas: 0 (Con algunas excepciones habladas previamente con el profesor)
-
-Todo Pull Request debe aprobar satisfactoriamente los controles automáticos configurados en GitHub Actions.
-
-# Pull Requests
+### Pull Requests
 
 Se realizaron revisiones de código mediante Pull Requests.
 
-## PR #29
+#### PR #29
 
 <img width="1117" height="731" alt="129e42d6-91d6-4a20-aaea-e4dd061a6076" src="https://github.com/user-attachments/assets/da66fa57-945a-4e6d-8d07-83426bf917ac" />
 
 
-## PR #4
+#### PR #4
 <img width="1111" height="733" alt="d348a12c-b8a6-4d5b-ab62-c700e3342d27" src="https://github.com/user-attachments/assets/6aa0ec9d-5ff2-43e6-8e52-062469dd422a" />
 
-# Serverless
+### Protección de Rama
+
+<img width="974" height="528" alt="af5e6960-6bc7-4fe0-ba48-e1165d8863df" src="https://github.com/user-attachments/assets/1dc101a9-bc15-41a7-b91a-4174785b9c3f" />
+
+La rama principal se encuentra protegida mediante GitHub Branch Protection Rules.
+
+Requisitos:
+
+- Pull Request obligatorio
+- Build exitoso
+- SonarCloud exitoso
+- Trivy  exitoso (Image Scan, FileSystem)
+- Gitleaks Secret exitoso
+- Functional Test Newman exitoso
+- Revisión obligatoria
+
+Esto garantiza que únicamente código validado pueda integrarse a main.
+
+## Serverless
 
 Se implementó una solución serverless utilizando:
 
@@ -341,24 +361,6 @@ Respuesta:
   "service": "retailstore-observability-status",
   "status": "ok"
 }
-
-# Protección de Rama
-
-<img width="974" height="528" alt="af5e6960-6bc7-4fe0-ba48-e1165d8863df" src="https://github.com/user-attachments/assets/1dc101a9-bc15-41a7-b91a-4174785b9c3f" />
-
-La rama principal se encuentra protegida mediante GitHub Branch Protection Rules.
-
-Requisitos:
-
-- Pull Request obligatorio
-- Build exitoso
-- SonarCloud exitoso
-- Trivy  exitoso (Image Scan, FileSystem)
-- Gitleaks Secret exitoso
-- Functional Test Newman exitoso
-- Revisión obligatoria
-
-Esto garantiza que únicamente código validado pueda integrarse a main.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
  
