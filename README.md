@@ -366,6 +366,419 @@ Respuesta:
   "status": "ok"
 }
 ```
+
+
+## Evidencia de Sprint
+
+### Sprint 1 
+
+<img width="806" height="847" alt="1bc1b02a-e925-48a1-bb8e-2ed32c264e26" src="https://github.com/user-attachments/assets/d73feccf-f697-4177-ac8d-b651ae54919c" />
+
+### Sprint 2
+
+<img width="1600" height="886" alt="b1cb4e26-32c7-44e5-9e5b-c9ab33b98613" src="https://github.com/user-attachments/assets/7a8f037f-eed3-4b7f-94e6-112a9630f7f6" />
+
+### Sprint 4
+
+<img width="1597" height="908" alt="image" src="https://github.com/user-attachments/assets/67956d4d-d31a-4223-9b96-c8ee558cd69e" />
+
+### Cronograma
+
+<img width="1623" height="863" alt="image" src="https://github.com/user-attachments/assets/bb1538c9-7389-4342-ab91-860759dfe20e" />
+
+### Epicas 
+
+<img width="1632" height="681" alt="image" src="https://github.com/user-attachments/assets/b39f026c-216a-49b3-86ba-2c98548939bc" />
+
+
+## Architecture Decision Records
+
+### ADR-001 - Gestión Ágil del Proyecto con Scrum y Jira
+
+#### Estado
+
+Aceptado
+
+#### Contexto
+
+El proyecto requería una metodología de trabajo que permitiera organizar tareas, realizar seguimiento del avance y coordinar el trabajo entre los integrantes del equipo.
+
+#### Opciones consideradas
+
+- Kanban 
+- Scrum + Jira
+
+#### Pros Kanban
+
+Flexible.
+Fácil implementación.
+
+#### Contras Kanban
+
+Menor planificación formal.
+Menor estructura para seguimiento académico.
+
+
+#### Pros Scrum + Jira
+
+Planificación mediante sprints.
+Seguimiento visual del trabajo.
+Priorización clara de tareas.
+Amplio soporte en Jira.
+
+#### Contras Scrum + Jira
+
+Mayor formalidad academica.
+
+#### Decisión
+
+Decidimos utilizar Scrum como marco de trabajo y Jira como herramienta de gestión.
+
+#### Consecuencias
+
+Se logró organizar el proyecto mediante sprints, registrar evidencias de avance y gestionar las tareas de manera estructurada.
+
+
+### ADR-002 - Gestión de Código Fuente con GitHub y Trunk-Based Development
+
+#### Estado
+
+Aceptado
+
+#### Contexto
+
+Era necesario definir una estrategia de colaboración que favoreciera la integración continua y redujera conflictos de código.
+
+#### Opciones consideradas
+
+-Git Flow
+-Trunk-Based Development
+
+#### Pros Git Flow
+
+Separación clara entre ambientes.
+
+#### Contras Git Flow
+
+Complejidad innecesaria para un equipo pequeño.
+
+
+#### Pros Trunk-Based Development
+
+Integración continua.
+Menor complejidad.
+Menor riesgo de conflictos.
+
+#### Contras Trunk-Based Development
+
+Requiere automatización y disciplina.
+
+#### Decisión
+
+Adoptamos GitHub como repositorio principal y Trunk-Based Development como estrategia de versionado.
+
+#### Consecuencias
+
+Las integraciones fueron frecuentes y controladas mediante Pull Requests y Branch Protection Rules.
+
+### ADR-003 - Terraform con Backend Remoto en S3
+
+#### Estado
+
+Aceptado
+
+#### Contexto
+
+La infraestructura debía ser reproducible, versionada y compartida entre integrantes.
+
+#### Opciones consideradas
+
+- Configuración manual
+- Terraform + Backend S3
+- 
+#### Pros Configuración manual
+
+Implementación rápida.
+
+#### Contras Configuración manual
+
+No reproducible.
+
+#### Pros Terraform + Backend S3
+
+Versionado.
+Automatización.
+Estado centralizado.
+
+#### Contras Terraform + Backend S3
+
+Configuración inicial más compleja.
+
+#### Decisión
+
+Utilizamos Terraform para toda la infraestructura y Amazon S3 como backend remoto del estado.
+
+#### Consecuencias
+
+Se logró una infraestructura completamente reproducible y administrada mediante código.
+
+
+### ADR-004 - Despliegue de Contenedores con Amazon ECS y Amazon ECR
+
+#### Estado
+
+Aceptado
+
+#### Contexto
+
+La aplicación Retail Store está basada en microservicios contenidos en Docker.
+
+#### Opciones consideradas
+
+-Kubernetes (EKS)
+-ECS Fargate + ECR
+
+#### Pros Kubernetes (EKS)
+
+Alta flexibilidad.
+
+#### Contras Kubernetes (EKS)
+
+Mayor complejidad operativa.
+
+#### Pros ECS Fargate + ECR
+
+Integración nativa AWS.
+Menor complejidad.
+Administración simplificada.
+
+#### Contras ECS Fargate + ECR
+
+Menor portabilidad.
+
+#### Decisión
+
+Se seleccionó Amazon ECS Fargate para ejecutar los contenedores y Amazon ECR para almacenar imágenes Docker.
+
+#### Consecuencias
+
+Se simplificó el despliegue y mantenimiento de la plataforma.
+
+
+### ADR-005 - Calidad de Código con SonarCloud
+
+#### Estado
+
+Aceptado
+
+#### Contexto
+
+Era necesario incorporar análisis de calidad y controles automáticos en el pipeline.
+
+#### Opciones consideradas
+
+Semgrep
+SonarCloud
+
+#### Pros Semgrep
+
+Fácil integración.
+
+#### Contras Semgrep
+
+Menor cobertura de métricas de calidad.
+
+#### Pros SonarCloud
+
+Code Smells.
+Coverage.
+Quality Gates.
+Integración con GitHub.
+
+#### Contras SonarCloud
+
+Dependencia de plataforma externa.
+
+#### Decisión
+
+Se adoptó SonarCloud como plataforma principal de análisis estático y calidad.
+
+#### Consecuencias
+
+Se incorporaron métricas objetivas y controles automáticos de calidad.
+
+
+### ADR-006 - Seguridad con Trivy y Gitleaks
+
+#### Estado
+
+Aceptado
+
+#### Contexto
+
+La estrategia DevSecOps requería controles de seguridad automatizados.
+
+#### Opciones consideradas
+
+-Escaneo manual
+-Trivy + Gitleaks
+
+#### Pros Escaneo manual
+
+Sin herramientas adicionales.
+
+#### Contras Escaneo manual
+
+Poco confiable.
+
+#### Pros Trivy + Gitleaks
+
+Automatización.
+Integración CI/CD.
+Cobertura de vulnerabilidades y secretos.
+
+#### Contras Trivy + Gitleaks
+
+Posibles falsos positivos.
+
+#### Decisión
+
+Se integraron Trivy y Gitleaks dentro del pipeline.
+
+#### Consecuencias
+
+Se detectan vulnerabilidades y exposición de secretos de forma temprana.
+
+
+### ADR-007 - Validación Funcional con Postman y Newman
+
+#### Estado
+
+Aceptado
+
+#### Contexto
+
+Era necesario validar automáticamente el funcionamiento de los servicios luego del despliegue.
+
+#### Opciones consideradas
+
+-Pruebas manuales
+-Postman + Newman
+
+#### Pros Pruebas manuales
+
+Simples.
+
+#### Contras Pruebas manuales
+
+No automatizables.
+
+#### Pros Postman + Newman
+
+Automatización.
+Integración CI/CD.
+Reportes.
+
+#### Contras Postman + Newman
+
+Mantenimiento de colecciones.
+
+#### Decisión
+
+Se adoptó Postman para diseñar pruebas y Newman para ejecutarlas automáticamente.
+
+#### Consecuencias
+
+El pipeline puede validar el comportamiento funcional de la aplicación después de cada despliegue.
+
+
+### ADR-008 - Arquitectura Serverless con AWS Lambda y API Gateway
+
+#### Estado
+
+Aceptado
+
+#### Contexto
+
+Se requería integrar al menos un servicio serverless relacionado con observabilidad o seguridad.
+
+#### Opciones consideradas
+
+-Lambda únicamente
+-API Gateway + Lambda
+
+#### Pros Lambda únicamente
+
+Simplicidad.
+
+#### Contras Lambda únicamente
+
+Sin endpoint HTTP accesible.
+
+#### Pros API Gateway + Lambda
+
+Endpoint HTTP.
+Escalabilidad automática.
+Integración con CloudWatch.
+Rate Limiting.
+
+#### Contras API Gateway + Lambda
+
+Mayor cantidad de componentes.
+
+#### Decisión
+
+Se implementó una solución basada en AWS Lambda y API Gateway para exponer un endpoint de observabilidad.
+
+#### Consecuencias
+
+Se incorporó una arquitectura serverless integrada al ecosistema AWS y alineada con los objetivos del proyecto.
+
+
+### ADR-009 - Observabilidad Centralizada con CloudWatch
+
+#### Estado
+
+Aceptado
+
+#### Contexto
+
+Era necesario monitorear servicios, recolectar métricas y generar alertas operativas.
+
+#### Opciones consideradas
+
+-Monitoreo manual
+-CloudWatch + SNS
+
+#### Pros Monitoreo manual
+
+Sin configuración adicional.
+
+#### Contras Monitoreo manual
+
+Poco escalable.
+
+#### Pros CloudWatch + SNS
+
+Integración nativa.
+Dashboards.
+Alarmas automáticas.
+Centralización.
+
+#### Contras CloudWatch + SNS
+
+Dependencia de AWS.
+
+#### Decisión
+
+Se adoptó CloudWatch como plataforma central de observabilidad y SNS para notificaciones.
+
+#### Consecuencias
+
+Se centralizaron logs, métricas y alertas, permitiendo una respuesta más rápida ante incidentes.
+
+
+
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
  
