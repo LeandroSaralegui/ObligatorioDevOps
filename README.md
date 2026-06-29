@@ -144,37 +144,41 @@ Se refiere con "X" al microservicio correspondiente.
 
 ## Estructura del repositorio
 
+```text
 app/
 ├── docker-compose.yml
 ├── init-db.sql
 ├── .gitleaks.toml
 ├── sonar-project.properties
-├── terraform/ 
-│    ├──environments/
-│    │   ├── dev/
-│    │   ├── test/
-│    │   └── prod/
-│    │
-│    └── modules/
-│        ├── vpc/
-│        ├── ecs/
-│        ├── ecs_services/
-│        ├── ecr/
-│        ├── cloudwatch/
-│        ├── secrets/
-│        └── serverless/
+│
+├── terraform/
+│   ├── environments/
+│   │   ├── dev/
+│   │   ├── test/
+│   │   └── prod/
+│   │
+│   └── modules/
+│       ├── vpc/
+│       ├── ecs/
+│       ├── ecs_services/
+│       ├── ecr/
+│       ├── cloudwatch/
+│       ├── secrets/
+│       └── serverless/
 │
 ├── src/
-│    ├── catalog/        # Go - Catálogo de productos
-│    ├── cart/           # Python - Carrito de compras
-│    ├── checkout/       # TypeScript/NestJS - Proceso de pago
-│    ├── orders/         # Go - Gestión de órdenes
-│    ├── ui/             # TypeScript/Express - Frontend
-│    └── admin/          # TypeScript/Express - Panel de administración
+│   ├── catalog/      # Go - Catálogo de productos
+│   ├── cart/         # Python - Carrito de compras
+│   ├── checkout/     # TypeScript / NestJS - Proceso de pago
+│   ├── orders/       # Go - Gestión de órdenes
+│   ├── ui/           # TypeScript / Express - Frontend
+│   └── admin/        # TypeScript / Express - Panel de administración
 │
 ├── postman/
 │
-└── .github/workflows/
+└── .github/
+    └── workflows/
+```
 
 ## Tecnologías
 
@@ -356,11 +360,12 @@ Endpoint:
 GET /observability/status
 
 Respuesta:
-
+```text
 {
   "service": "retailstore-observability-status",
   "status": "ok"
 }
+```
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
  
