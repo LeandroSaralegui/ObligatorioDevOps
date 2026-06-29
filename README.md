@@ -776,7 +776,70 @@ Se adoptó CloudWatch como plataforma central de observabilidad y SNS para notif
 
 Se centralizaron logs, métricas y alertas, permitiendo una respuesta más rápida ante incidentes.
 
+## Recomendaciones de Mejora
 
+Durante el desarrollo del proyecto se identificaron oportunidades de mejora que podrían implementarse en futuras iteraciones:
+
+### Ampliación de pruebas funcionales
+
+Si bien se implementó una colección de Postman ejecutada automáticamente mediante Newman dentro del pipeline CI/CD, se recomienda ampliar la cantidad de casos de prueba cubiertos, incorporando escenarios de error, validaciones de seguridad y pruebas de integración entre microservicios.
+
+### Incrementar la profundidad del testing
+
+Se recomienda aumentar la cobertura de pruebas automatizadas mediante la incorporación de pruebas unitarias, pruebas de integración y pruebas de rendimiento, permitiendo detectar defectos de forma más temprana y mejorar la confiabilidad general del sistema.
+
+### Incorporar autenticación basada en JWT
+
+Actualmente la aplicación no implementa un mecanismo centralizado de autenticación para los usuarios finales. Como mejora futura se propone incorporar autenticación basada en JSON Web Tokens (JWT), permitiendo proteger los distintos endpoints y controlar el acceso a los recursos de manera más segura.
+
+### Extender la observabilidad al resto de los microservicios
+
+La solución actual cuenta con monitoreo y observabilidad enfocados principalmente en los componentes principales de la arquitectura. Se recomienda ampliar la instrumentación y monitoreo a todos los microservicios, incorporando métricas específicas de negocio, dashboards dedicados y alertas particulares para cada servicio.
+
+### Fortalecer los Quality Gates
+
+Se recomienda evolucionar los criterios de calidad definidos en SonarCloud incrementando progresivamente los requisitos mínimos de cobertura, reduciendo los límites aceptables de code smells y estableciendo controles más estrictos sobre vulnerabilidades.
+
+## Lecciones Aprendidas
+
+Durante el desarrollo del proyecto adquirimos experiencia práctica en la aplicación de los conceptos vistos en el curso de DevOps, enfrentando desafíos reales relacionados con automatización, infraestructura, seguridad, observabilidad y trabajo colaborativo.
+
+### Infrastructure as Code
+
+La utilización de Terraform permitió comprender la importancia de definir la infraestructura mediante código, facilitando la reproducibilidad de ambientes y reduciendo errores derivados de configuraciones manuales. También aprendimos la importancia de mantener el estado remoto mediante S3 y DynamoDB para permitir el trabajo colaborativo sobre la infraestructura.
+
+### Integración y Entrega Continua
+
+La implementación de pipelines en GitHub Actions nos permitió automatizar tareas que tradicionalmente se realizan manualmente, como compilación, análisis de calidad, escaneo de seguridad, despliegue y pruebas funcionales. Esto evidenció cómo la automatización mejora la velocidad y confiabilidad de los procesos de entrega.
+
+### DevSecOps
+
+La integración de herramientas como SonarCloud, Trivy y Gitleaks demostró la importancia de incorporar controles de calidad y seguridad desde las primeras etapas del ciclo de desarrollo. Aprendimos que detectar problemas tempranamente reduce significativamente el costo de corregirlos posteriormente.
+
+### Gestión Segura de Secretos
+
+La migración de credenciales hacia AWS Secrets Manager nos permitió comprender los riesgos asociados al almacenamiento de secretos en código fuente o archivos de configuración, así como las ventajas de una gestión centralizada y segura de credenciales.
+
+### Observabilidad
+
+La implementación de CloudWatch Logs, métricas, dashboards y alarmas nos mostró la importancia de contar con mecanismos de monitoreo que permitan detectar problemas operativos antes de que impacten significativamente en los usuarios. También aprendimos a definir umbrales y procedimientos básicos de respuesta ante alertas.
+
+### Arquitecturas Basadas en Contenedores
+
+El despliegue de microservicios utilizando Docker, Amazon ECS y Amazon ECR nos permitió comprender mejor los beneficios de la contenerización, la independencia entre servicios y la facilidad para escalar aplicaciones modernas.
+
+### Servicios Serverless
+
+La integración de AWS Lambda y API Gateway nos permitió experimentar con arquitecturas serverless y comprender cómo este tipo de soluciones pueden complementar arquitecturas tradicionales, reduciendo la necesidad de administrar infraestructura adicional.
+
+### Trabajo Colaborativo
+
+La utilización de Scrum, Jira, Pull Requests y Trunk-Based Development favoreció la organización del trabajo y la colaboración entre los integrantes del equipo. Aprendimos la importancia de realizar integraciones frecuentes, revisiones de código y mantener una comunicación constante para reducir conflictos y mejorar la calidad del software.
+Si bien no se implementó de manera correcta el nombramiento de las ramas al momento de pushear a Git, las técnicas y herramientas utilizadas fueron de gran utilidad para el correcto desarrollo del proyecto.
+
+### Conclusión
+
+La principal lección aprendida fue que DevOps no consiste únicamente en utilizar herramientas específicas, sino en integrar desarrollo, operaciones, seguridad y automatización dentro de un proceso continuo orientado a mejorar la calidad, confiabilidad y velocidad de entrega del software.
 
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
